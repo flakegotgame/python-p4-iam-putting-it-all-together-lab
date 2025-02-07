@@ -8,7 +8,6 @@ from config import app, db, api
 from models import User, Recipe
 
 class Signup(Resource):
-    pass
     def post(self):
         json = request.get_json()
         try:
@@ -25,7 +24,6 @@ class Signup(Resource):
             return {'error': str(e)}, 422
 
 class CheckSession(Resource):
-    pass
     def get(self):
         user_id = session.get('user_id')
         if user_id:
@@ -35,7 +33,6 @@ class CheckSession(Resource):
             
 
 class Login(Resource):
-    pass
     def post(self):
         json = request.get_json()
         user = User.query.filter(User.username == json.get('username')).first()
@@ -45,7 +42,6 @@ class Login(Resource):
         return user.to_dict(rules=('-recipes', '-_password_hash')), 200
 
 class Logout(Resource):
-    pass
     def delete(self):
         if session['user_id']:
             session['user_id'] = None
@@ -53,7 +49,6 @@ class Logout(Resource):
         return {"error": "Not logged in"}, 401
 
 class RecipeIndex(Resource):
-    pass
     def get(self):
         if session.get('user_id'):
             recipes = [recipe.to_dict() for recipe in Recipe.query.all()]
@@ -80,3 +75,4 @@ api.add_resource(RecipeIndex, '/recipes', endpoint='recipes')
 
 
 if __name__ == '__main__':
+    app.run(debug=True)  # Make sure the app runs when executed directly
